@@ -15,7 +15,8 @@ import { logViolations, logViolationsAndGenerateReport } from './accessibility-l
 const defaultOptions = {
     runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'],
     includedImpacts: ['critical', 'serious'],
-    generateReport: true
+    generateReport: true,
+    skipFailures: false
 }
 
 /**
@@ -56,6 +57,7 @@ const defaultOptions = {
  * @param {boolean} [options.preload=true] - (optional) Axe-core® option plugin - Any additional assets (eg: cssom) to preload before running rules. By default true.
  * @param {boolean} [options.performanceTimer=false] - (optional) Axe-core® plugin option - Log rule performance metrics to the console. By default false.
  * @param {number} [options.pingWaitTime=500] - (optional) Axe-core® option plugin - Time in milliseconds before axe-core® considers a frame unresponsive. By default 500 (0.5 seconds).
+ * @param {boolean} [options.skipFailures=false] - (optional) CYPRESS-AXE plugin option - Whether to continue after failed step or not. By default false.
  * @returns {void}
  */
 const checkAccessibility = (context, options) => {
@@ -71,7 +73,8 @@ const checkAccessibility = (context, options) => {
     cy.checkA11y(
         context,
         options,
-        options.generateReport ? logViolationsAndGenerateReport : logViolations
+        options.generateReport ? logViolationsAndGenerateReport : logViolations,
+        options.skipFailures
     )
 }
 Cypress.Commands.add('checkAccessibility', checkAccessibility)
